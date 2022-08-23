@@ -1,33 +1,28 @@
-# Poker Hand Strength Evaluator
+# Poker Hand Strength Evaluator 🃏
 
-## Task Description
 
-Your task is to develop an algorithm for sorting poker hands according to their strength.
+This personal repo has the objective of containing an algorithm as functional as possible in Scala to organize different poker hands according to their strength.
 
-### Disclaimer
-
-I have been working long hours to finish the project, and I couldn't.
-I could probably finish it by 4 - 5 more days. It's 60% done. Besides, I have been refining the high level process
-in miro (link above). I know it's not the best but, I had tons of fun and I learned a lot in this challenge. Sorry for the messy code.
 
 ### Poker Games
 
-You should support one to three poker game types (more is better):
-* Texas Hold'em - input is a board of 5 cards, and multiple hands of 2 cards each.
+Support three poker game types:
+
+* **Texas Hold'em** - input is a board of 5 cards, and multiple hands of 2 cards each.
 
   A value of a Texas Hold'em hand is the best possible value out of all possible subsets of
   5 cards from the 7 cards which are formed by 5 board cards and 2 hand cards.
 
   See [Texas Hold'em rules](https://en.wikipedia.org/wiki/Texas_hold_%27em).
 
-* Omaha Hold'em - input is a board of 5 cards, and multiple hands of 4 cards each.
+* **Omaha Hold'em** - input is a board of 5 cards, and multiple hands of 4 cards each.
 
   A value of an Omaha Hold'em hand is the best possible value out of all possible 5 card combinations
   which are formed from 3 out of 5 board cards and 2 out of 4 hand cards.
 
   See [Omaha Hold'em rules](https://en.wikipedia.org/wiki/Omaha_hold_%27em).
 
-* Five Card Draw - input is multiple hands of 5 cards each.
+* **Five Card Draw** - input is multiple hands of 5 cards each.
 
   A value of a Five Card Draw hand is the value of the 5 hand cards.
 
@@ -53,10 +48,10 @@ In case of further ties, the ranks of the remaining cards decide the highest val
 
 All suits are considered equal in strength.
 
-When comparing `Full House`-s, the `Three of a kind` rank comparison is more important than the `Pair` rank
+- When comparing `Full House`-s, the `Three of a kind` rank comparison is more important than the `Pair` rank
 comparison, for example, `QQQ88 > 999KK`, `KKK77 > QQQJJ` and `KKK77 > KKK66`.
 
-When comparing `Straight`-s, the `A2345` `Straight` is the weakest one and the `TJQKA` one the strongest one,
+- When comparing `Straight`-s, the `A2345` `Straight` is the weakest one and the `TJQKA` one the strongest one,
 for example, `23456 > A2345` and `TJQKA > 9TJQK`.
 
 If any of these rules are not clear, please consult [Poker hand and categories](https://en.wikipedia.org/wiki/List_of_poker_hands#Hand-ranking_categories) and
@@ -66,8 +61,6 @@ the game rules of the specific poker games.
 
 Your need to implement the `process` method in the [Solver.scala](src/main/scala/com/evolution/bootcamp/assignment/poker/Solver.scala)
 class.
-
-All the unit tests in [TexasHoldemSolverTest.scala](src/test/scala/com/evolution/bootcamp/assignment/poker/TexasHoldemSolverTest.scala), [OmahaHoldemSolverTest.scala](src/test/scala/com/evolution/bootcamp/assignment/poker/OmahaHoldemSolverTest.scala), and [FiveCardDrawSolverTest.scala](src/test/scala/com/evolution/bootcamp/assignment/poker/FiveCardDrawSolverTest.scala) should pass. There will also be other tests run after you submit your solver. 
 
 ### Input of Test Cases
 
@@ -132,3 +125,7 @@ KdKs 9hJh
 Qc8dAd6c KsAsTcTs Js2dKd8c 7dQsAc5d Jh2h3c9c
 4c8h2h6c9c Ah9d6s2cKh Kd9sAs3cQs 7h4s4h8c9h Tc5h6dAc5c
 ```
+
+## How to run locally
+
+## How to test
