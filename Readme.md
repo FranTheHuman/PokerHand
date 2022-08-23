@@ -126,6 +126,8 @@ Qc8dAd6c KsAsTcTs Js2dKd8c 7dQsAc5d Jh2h3c9c
 4c8h2h6c9c Ah9d6s2cKh Kd9sAs3cQs 7h4s4h8c9h Tc5h6dAc5c
 ```
 
-## How to run locally
+## How to run manually
+
+## How to run it from a file
 
 ## How to test
