@@ -7,6 +7,6 @@ import cats.effect.ExitCode
   * @tparam F
   *   effect
   */
-trait GameRunner[F[_]] {
-  def run: F[ExitCode]
+trait GameRunner[F[_], T] {
+  def run: F[T]
 }

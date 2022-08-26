@@ -6,7 +6,7 @@ import domain.StrengthPokerEval
 import org.typelevel.log4cats.Logger
 import org.typelevel.log4cats.slf4j.Slf4jLogger
 
-object GameRunnerFromCommand extends GameRunner[IO] {
+object GameRunnerFromCommand extends GameRunner[IO, ExitCode] {
 
   implicit val logger: Logger[IO] =
     Slf4jLogger.getLogger[IO]
