@@ -9,4 +9,16 @@ lazy val root = (project in file("."))
     name := "PokerHand"
   )
 
+scalacOptions ++= Seq(
+  "-deprecation",
+  "-encoding",
+  "UTF-8",
+  "-language:experimental.macros",
+  "-feature",
+  "-unchecked",
+  "-Xfatal-warnings",
+  "-Ywarn-numeric-widen",
+  "-Ywarn-value-discard"
+)
+
 libraryDependencies ++= dependencies

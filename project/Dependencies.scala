@@ -5,6 +5,7 @@ object Dependencies {
   object V {
     val circe      = "0.14.2"
     val logback    = "1.2.11"
+    val log4cats   = "2.4.0"
     val pureconfig = "0.17.1"
     val cats       = "3.3.14"
     val http4s     = "0.23.14"
@@ -14,6 +15,8 @@ object Dependencies {
   val circeGenerics     = "io.circe"              %% "circe-generic"       % V.circe
   val circeParser       = "io.circe"              %% "circe-parser"        % V.circe
   val logbackClassic    = "ch.qos.logback"         % "logback-classic"     % V.logback
+  val log4catsCore      = "org.typelevel"         %% "log4cats-core"       % V.log4cats
+  val log4catsSlf4j     = "org.typelevel"         %% "log4cats-slf4j"      % V.log4cats
   val pureconfig        = "com.github.pureconfig" %% "pureconfig"          % V.pureconfig
   val catsEffect        = "org.typelevel"         %% "cats-effect"         % V.cats
   val http4sDsl         = "org.http4s"            %% "http4s-dsl"          % V.http4s
@@ -27,6 +30,8 @@ object Dependencies {
     circeGenerics,
     circeParser,
     pureconfig,
+    log4catsCore,
+    log4catsSlf4j,
     catsEffect,
     http4sDsl,
     http4sEmberServer,

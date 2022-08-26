@@ -1,7 +1,7 @@
 package application.runners
 
-import cats.effect.IO
+import cats.effect.{ExitCode, IO}
 
 object GameRunnerFromFile extends GameRunner[IO] {
-  override def run: IO[Unit] = ???
+  override def run: IO[ExitCode] = ???
 }

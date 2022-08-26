@@ -1,6 +1,5 @@
 # Poker application.models.Hand Strength Evaluator 🃏
 
-
 This personal repo has the objective of containing an algorithm as functional as possible in Scala to organize different poker hands according to their strength.
 
 
@@ -121,22 +120,22 @@ Qc8dAd6c KsAsTcTs Js2dKd8c 7dQsAc5d Jh2h3c9c
 4c8h2h6c9c Ah9d6s2cKh Kd9sAs3cQs 7h4s4h8c9h Tc5h6dAc5c
 ```
 
-## How to run in a console
+### How to run in a console
+
+    sbt 'run command-line'
+
+### How to run it from a file
 
     Not Implemented
 
-## How to run it from a file
+### How to run it from REST API
+
+    sbt 'run rest'
+
+### How to run it from GRAPHQL API
 
     Not Implemented
 
-## How to run it from REST API
-
-    Not Implemented
-
-## How to run it from GRAPHQL API
-
-    Not Implemented
-
-## How to test
+### How to test
 
     Not Implemented
