@@ -1,4 +1,4 @@
-# Poker Hand Strength Evaluator 🃏
+# Poker application.models.Hand Strength Evaluator 🃏
 
 
 This personal repo has the objective of containing an algorithm as functional as possible in Scala to organize different poker hands according to their strength.
@@ -22,13 +22,13 @@ Support three poker game types:
 
   See [Omaha Hold'em rules](https://en.wikipedia.org/wiki/Omaha_hold_%27em).
 
-* **Five Card Draw** - input is multiple hands of 5 cards each.
+* **Five application.models.Card Draw** - input is multiple hands of 5 cards each.
 
-  A value of a Five Card Draw hand is the value of the 5 hand cards.
+  A value of a Five application.models.Card Draw hand is the value of the 5 hand cards.
 
-  See [Five Card Draw rules](https://en.wikipedia.org/wiki/Five-card_draw).
+  See [Five application.models.Card Draw rules](https://en.wikipedia.org/wiki/Five-card_draw).
 
-### Hand Value
+### application.models.Hand Value
 
 The hand values for 5 cards are as follows (in descending order - from strongest to weakest):
 
@@ -57,11 +57,6 @@ All suits are considered equal in strength.
 If any of these rules are not clear, please consult [Poker hand and categories](https://en.wikipedia.org/wiki/List_of_poker_hands#Hand-ranking_categories) and
 the game rules of the specific poker games.
 
-## Implementation
-
-Your need to implement the `process` method in the [Solver.scala](src/main/scala/com/evolution/bootcamp/assignment/poker/Solver.scala)
-class.
-
 ### Input of Test Cases
 
 The input is to be read as a string:
@@ -75,7 +70,7 @@ The input is to be read as a string:
 * `game-type` specifies the game type for this test case, one of:
     * `texas-holdem` - for Texas Hold'em
     * `omaha-holdem` - for Omaha Hold'em
-    * `five-card-draw` - for Five Card Draw
+    * `five-card-draw` - for Five application.models.Card Draw
 
 * `<5 board cards>` is a 10 character string where each 2 characters encode a card, only used for Texas and
   Omaha Hold' ems
@@ -126,8 +121,22 @@ Qc8dAd6c KsAsTcTs Js2dKd8c 7dQsAc5d Jh2h3c9c
 4c8h2h6c9c Ah9d6s2cKh Kd9sAs3cQs 7h4s4h8c9h Tc5h6dAc5c
 ```
 
-## How to run manually
+## How to run in a console
+
+    Not Implemented
 
 ## How to run it from a file
 
+    Not Implemented
+
+## How to run it from REST API
+
+    Not Implemented
+
+## How to run it from GRAPHQL API
+
+    Not Implemented
+
 ## How to test
+
+    Not Implemented
