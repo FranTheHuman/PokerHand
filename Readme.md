@@ -126,7 +126,7 @@ Qc8dAd6c KsAsTcTs Js2dKd8c 7dQsAc5d Jh2h3c9c
 
 ### How to run it from a file
 
-    Not Implemented
+    sbt 'run file'
 
 ### How to run it from REST API
 

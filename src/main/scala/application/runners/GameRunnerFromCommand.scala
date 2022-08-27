@@ -16,7 +16,7 @@ object GameRunnerFromCommand extends GameRunner[IO, ExitCode] {
     _                  <- Logger[IO] info s"INPUT: $input"
     validatedPokerGame <- IO.fromEither(GameSpawner.spawn(input))
     _                  <- Logger[IO] info s"GAME: $validatedPokerGame"
-    result             <- IO(StrengthPokerEval.play(validatedPokerGame))
+    result             <- IO(StrengthPokerEval.eval(validatedPokerGame))
     _                  <- Logger[IO] info s"RESULT: $result"
   } yield ExitCode.Success
 }

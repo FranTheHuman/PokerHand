@@ -31,7 +31,7 @@ object Router extends Router {
             _                   <- Logger[F] info s"INPUTS: $inputs"
             validatedPokerGames <- Concurrent[F].fromEither(inputs.map(GameSpawner.spawn).sequence)
             _                   <- Logger[F] info s"VALID GAMES: $validatedPokerGames"
-            result              <- Concurrent[F].pure(validatedPokerGames.map(StrengthPokerEval.play))
+            result              <- Concurrent[F].pure(validatedPokerGames.map(StrengthPokerEval.eval))
             _                   <- Logger[F] info s"RESULTS: $result"
             response            <- Ok(result.asJson)
           } yield response) handleErrorWith (error => InternalServerError(error.toString))

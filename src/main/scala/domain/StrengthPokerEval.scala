@@ -4,12 +4,12 @@ import application.models.PokerGame
 
 trait StrengthPokerEval {
 
-  def play: PokerGame => String
+  def eval: PokerGame => String
 
 }
 
 object StrengthPokerEval extends StrengthPokerEval {
 
-  override def play: PokerGame => String = game => game.toString
+  override def eval: PokerGame => String = game => game.toString
 
 }
