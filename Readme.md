@@ -1,4 +1,4 @@
-# Poker application.models.Hand Strength Evaluator 🃏
+# Poker Hand Strength Evaluator 🃏
 
 This personal repo has the objective of containing an algorithm as functional as possible in Scala to organize different poker hands according to their strength.
 

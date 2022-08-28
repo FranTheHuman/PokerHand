@@ -1,6 +1,7 @@
 package application.runners
 
 import application.GameSpawner
+import application.errors.SpawnPokerGameError
 import cats.effect.{ExitCode, IO}
 import domain.StrengthPokerEval
 import org.typelevel.log4cats.Logger
@@ -11,12 +12,17 @@ object GameRunnerFromCommand extends GameRunner[IO, ExitCode] {
   implicit val logger: Logger[IO] =
     Slf4jLogger.getLogger[IO]
 
-  override def run: IO[ExitCode] = for {
+  override def run: IO[ExitCode] = (for {
     input              <- IO.readLine
     _                  <- Logger[IO] info s"INPUT: $input"
     validatedPokerGame <- IO.fromEither(GameSpawner.spawn(input))
     _                  <- Logger[IO] info s"GAME: $validatedPokerGame"
     result             <- IO(StrengthPokerEval.eval(validatedPokerGame))
     _                  <- Logger[IO] info s"RESULT: $result"
-  } yield ExitCode.Success
+  } yield ExitCode.Success) handleErrorWith {
+    case error: SpawnPokerGameError =>
+      Logger[IO].info(s"ERROR: $error : ${error.message}") >> IO(ExitCode.Error)
+    case error =>
+      Logger[IO].info(s"ERROR: $error") >> IO(ExitCode.Error)
+  }
 }

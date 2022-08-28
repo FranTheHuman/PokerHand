@@ -1,5 +1,11 @@
 package application.models
 
+import application.Validators
+import application.Validators.Validation
+import application.models.Hand.makeHands
+import cats.implicits.toTraverseOps
+import cats.instances.either._
+
 sealed trait PokerGame
 
 object PokerGame {

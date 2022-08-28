@@ -1,6 +1,6 @@
 package domain
 
-import application.models.PokerGame
+import application.models.{Hand, PokerGame}
 
 trait StrengthPokerEval {
 
@@ -10,6 +10,11 @@ trait StrengthPokerEval {
 
 object StrengthPokerEval extends StrengthPokerEval {
 
-  override def eval: PokerGame => String = game => game.toString
+  override def eval: PokerGame => String = {
+    case PokerGame.TexasHoldem(boardCards, hands) => ???
+    case PokerGame.OmahaHoldem(boardCards, hands) => ???
+    case PokerGame.FiveCardDraw(hands) =>
+      hands map Hand.sort sortWith { (first, next) => ??? } mkString "\n"
+  }
 
 }
