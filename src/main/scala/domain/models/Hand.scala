@@ -12,30 +12,7 @@ import scala.annotation.tailrec
   * @param cards
   *   list of cards
   */
-case class Hand(cards: List[Card], handType: HandType) {
-
-  val isSameSuit: Boolean =
-    cards
-      .groupBy(_.suit.value)
-      .toList
-      .length == 1
-
-  val isConsecutive: Boolean = {
-    val isNext: (Card, Card) => Boolean = (last, next) =>
-      if (power(next) > power(last) && getIndexPower(next) - 1 == getIndexPower(last)) true
-      else false
-
-    @tailrec
-    def rec(_cards: List[Card], lastValue: Card, result: Boolean): Boolean = _cards match {
-      case ::(head, tail) if isNext(lastValue, head) => rec(tail, head, result = true)
-      case ::(_, _)                                  => false
-      case Nil                                       => result
-    }
-
-    rec(cards, Card.empty, result = false)
-  }
-
-}
+case class Hand(cards: List[Card], handType: HandType)
 
 object Hand {
 

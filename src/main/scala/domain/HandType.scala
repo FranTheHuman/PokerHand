@@ -1,5 +1,6 @@
 package domain
 
+import domain.models.Card.{areConsecutive, areSameSuit}
 import domain.models._
 
 import scala.annotation.tailrec
@@ -27,17 +28,17 @@ object HandType {
       val groupHas: Int => Boolean = n => groups map (_._2) contains n
       val higher: Rank             = findHigherRankRec(groups, 5)
 
-      val hand = Hand(cards, HighCard(higher))
-
-      if (hand.isSameSuit && hand.isConsecutive) StraightFlush(higher)
-      else if (groupHas(4)) FourOfAKind(higher)
-      else if (groupHas(3) && groupHas(2)) FullHouse(higher)
-      else if (hand.isSameSuit) Flush(higher)
-      else if (hand.isConsecutive) Straight(higher)
-      else if (groupHas(3)) ThreeOfAKind(higher)
-      else if (groupHas(2) && groups.filterNot(_._2 == 2).size == 1) TwoPair(higher)
-      else if (groupHas(2)) Pair(higher)
-      else HighCard(higher)
+      cards match {
+        case c if areSameSuit(c) && areConsecutive(c)                  => StraightFlush(higher)
+        case c if groupHas(4)                                          => FourOfAKind(higher)
+        case c if groupHas(3) && groupHas(2)                           => FullHouse(higher)
+        case c if areSameSuit(c)                                       => Flush(higher)
+        case c if areConsecutive(c)                                    => Straight(higher)
+        case c if groupHas(3)                                          => ThreeOfAKind(higher)
+        case c if groupHas(2) && groups.filterNot(_._2 == 2).size == 1 => TwoPair(higher)
+        case c if groupHas(2)                                          => Pair(higher)
+        case _                                                         => HighCard(higher)
+      }
 
     }
 
