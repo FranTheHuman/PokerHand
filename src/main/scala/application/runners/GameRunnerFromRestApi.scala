@@ -1,10 +1,10 @@
 package application.runners
 
-import application.Configurations.Configurations.SERVER_CONFIG
 import cats.effect.{ExitCode, IO}
 import infrastructure.adapter.in.rest.GameServer
 import org.typelevel.log4cats.Logger
 import org.typelevel.log4cats.slf4j.Slf4jLogger
+import application.models.Configurations.Configurations.SERVER_CONFIG
 
 object GameRunnerFromRestApi extends GameRunner[IO, ExitCode] {
 

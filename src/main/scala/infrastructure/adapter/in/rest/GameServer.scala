@@ -1,7 +1,7 @@
 package infrastructure.adapter.in.rest
 
-import application.Configurations.HttpConfig
-import application.Configurations.HttpConfig.{getHost, getPath, getPort}
+import application.models.Configurations.HttpConfig
+import application.models.Configurations.HttpConfig.{getHost, getPath, getPort}
 import cats.effect.Resource
 import cats.effect.kernel.{Async, Concurrent}
 import org.http4s.ember.server.EmberServerBuilder

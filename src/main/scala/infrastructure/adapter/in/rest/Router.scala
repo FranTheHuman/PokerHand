@@ -3,7 +3,6 @@ package infrastructure.adapter.in.rest
 import application.GameSpawner
 import cats.effect.kernel.Concurrent
 import cats.syntax.all._
-import domain.StrengthPokerEval
 import io.circe.Json
 import io.circe.syntax.EncoderOps
 import org.http4s.circe.{jsonEncoderOf, jsonOf}
@@ -31,7 +30,7 @@ object Router extends Router {
             _                   <- Logger[F] info s"INPUTS: $inputs"
             validatedPokerGames <- Concurrent[F].fromEither(inputs.map(GameSpawner.spawn).sequence)
             _                   <- Logger[F] info s"VALID GAMES: $validatedPokerGames"
-            result              <- Concurrent[F].pure(validatedPokerGames.map(StrengthPokerEval.eval))
+            result              <- Concurrent[F].pure(validatedPokerGames.map(_.eval))
             _                   <- Logger[F] info s"RESULTS: $result"
             response            <- Ok(result.asJson)
           } yield response) handleErrorWith (error => InternalServerError(error.toString))

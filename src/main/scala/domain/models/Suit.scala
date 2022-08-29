@@ -1,4 +1,4 @@
-package application.models
+package domain.models
 
 /** Class that represents a suit
   * @param value

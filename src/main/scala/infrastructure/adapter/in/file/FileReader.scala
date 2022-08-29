@@ -1,6 +1,6 @@
 package infrastructure.adapter.in.file
 
-import application.Configurations.FilePath
+import application.models.Configurations.FilePath
 import cats.Monad
 import cats.effect.Resource
 import cats.syntax.all._

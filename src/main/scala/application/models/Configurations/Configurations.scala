@@ -1,4 +1,4 @@
-package application.Configurations
+package application.models.Configurations
 
 import pureconfig.ConfigSource
 import pureconfig.generic.auto._

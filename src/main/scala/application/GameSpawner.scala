@@ -1,12 +1,12 @@
 package application
 
 import application.Validators.Validation
-import application.errors.SpawnPokerGameError
-import application.models.Hand.makeHands
-import application.models.PokerGame.{FiveCardDraw, OmahaHoldem, TexasHoldem}
-import application.models.names.PokerGamesNames
-import application.models.{Hand, PokerGame}
+import application.models.errors.SpawnPokerGameError
 import cats.implicits.toTraverseOps
+import domain.models.Hand.makeHands
+import domain.models.PokerGame.{FiveCardDraw, OmahaHoldem, TexasHoldem}
+import domain.models.names.PokerGamesNames
+import domain.models.{Hand, PokerGame}
 
 trait GameSpawner {
 
@@ -19,10 +19,9 @@ object GameSpawner extends GameSpawner with PokerGamesNames {
   override def spawn: String => Validation[PokerGame] =
     str =>
       for {
-        inputs      <- Validators.validateInputLength(str)
-        validInputs <- Validators.validateInputConsistency(inputs)
-        params      <- Validators.validateParametersLength(validInputs)
-        game        <- createByType(typeGame = params.headOption, cards = params.tail)
+        inputs <- Validators.validateInputLength(str)
+        params <- Validators.validateParametersLength(inputs)
+        game   <- createByType(typeGame = params.headOption, params.tail)
       } yield game
 
   private def createByType(typeGame: Option[String], cards: List[String]): Validation[PokerGame] =
@@ -30,15 +29,17 @@ object GameSpawner extends GameSpawner with PokerGamesNames {
 
       case Some(TEXAS_HOLDEM) =>
         for {
-          validBoardCards <- Validators.validateHandCards(cards.headOption.getOrElse(""), 10)
-          validCards      <- cards.tail.map(cards => Validators.validateHandCards(cards, 4)).sequence
-        } yield TexasHoldem(Hand(validBoardCards), makeHands(validCards))
+          validBoardCards      <- Validators.validateHandCards(cards.headOption.getOrElse(""), 10)
+          validCards           <- Validators.validateInputConsistency(cards.tail)
+          validCardsForTheGame <- validCards.tail.map(c => Validators.validateHandCards(c, 4)).sequence
+        } yield TexasHoldem(Hand(validBoardCards), makeHands(validCardsForTheGame))
 
       case Some(OMAHA_HOLDEM) =>
         for {
-          validBoardCards <- Validators.validateHandCards(cards.headOption.getOrElse(""), 10)
-          validCards      <- cards.tail.map(cards => Validators.validateHandCards(cards, 8)).sequence
-        } yield OmahaHoldem(Hand(validBoardCards), makeHands(validCards))
+          validBoardCards      <- Validators.validateHandCards(cards.headOption.getOrElse(""), 10)
+          validCards           <- Validators.validateInputConsistency(cards.tail)
+          validCardsForTheGame <- validCards.tail.map(c => Validators.validateHandCards(c, 8)).sequence
+        } yield OmahaHoldem(Hand(validBoardCards), makeHands(validCardsForTheGame))
 
       case Some(FIVE_CARD_DRAW) =>
         cards

@@ -1,21 +1,21 @@
 package application
 
-import application.errors.SpawnPokerGameError
+import application.models.errors.SpawnPokerGameError
 
 object Validators {
 
-  val CARD_REGEX = "[2-9KTQJA]{1}[CDSH]{1}"
+  val CARD_REGEX = "[2-9KTQJA]{1}[cdsh]{1}"
 
   type Validation[T] = Either[SpawnPokerGameError, T]
 
   val validateInputConsistency: List[String] => Validation[List[String]] =
-    str =>
-      Either
-        .cond(
-          str.map(_.matches(CARD_REGEX)).count(_ == true).equals(str.size),
-          str,
-          SpawnPokerGameError(s"Invalid values in the input -> $str")
-        )
+    str => Right(str)
+  // Either
+  //   .cond(
+  //     str.map(_.matches(CARD_REGEX)).count(_ == true).equals(str.size),
+  //     str,
+  //     SpawnPokerGameError(s"Invalid values in the input -> $str")
+  //   )
 
   val validateInputLength: String => Validation[List[String]] =
     str =>

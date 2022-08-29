@@ -1,4 +1,4 @@
-package application.Configurations
+package application.models.Configurations
 
 import com.comcast.ip4s.{Host, Port}
 import org.http4s.Uri

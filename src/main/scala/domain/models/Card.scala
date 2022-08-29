@@ -1,4 +1,4 @@
-package application.models
+package domain.models
 
 /** Model that represents a simple poker card
   *

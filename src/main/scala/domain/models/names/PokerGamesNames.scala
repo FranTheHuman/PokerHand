@@ -1,4 +1,4 @@
-package application.models.names
+package domain.models.names
 
 trait PokerGamesNames {
 

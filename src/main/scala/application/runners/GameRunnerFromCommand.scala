@@ -1,9 +1,9 @@
 package application.runners
 
 import application.GameSpawner
-import application.errors.SpawnPokerGameError
+import application.models.errors.SpawnPokerGameError
 import cats.effect.{ExitCode, IO}
-import domain.StrengthPokerEval
+import domain.models.PokerGame.asString
 import org.typelevel.log4cats.Logger
 import org.typelevel.log4cats.slf4j.Slf4jLogger
 
@@ -16,8 +16,8 @@ object GameRunnerFromCommand extends GameRunner[IO, ExitCode] {
     input              <- IO.readLine
     _                  <- Logger[IO] info s"INPUT: $input"
     validatedPokerGame <- IO.fromEither(GameSpawner.spawn(input))
-    _                  <- Logger[IO] info s"GAME: $validatedPokerGame"
-    result             <- IO(StrengthPokerEval.eval(validatedPokerGame))
+    _                  <- Logger[IO] info s"GAME: ${asString(validatedPokerGame)}"
+    result             <- IO(validatedPokerGame.eval)
     _                  <- Logger[IO] info s"RESULT: $result"
   } yield ExitCode.Success) handleErrorWith {
     case error: SpawnPokerGameError =>
