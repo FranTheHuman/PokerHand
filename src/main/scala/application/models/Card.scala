@@ -1,7 +1,5 @@
 package application.models
 
-import domain.RankValues
-
 /** Model that represents a simple poker card
   *
   * @param rank
@@ -21,12 +19,12 @@ object Card {
       .toList
 
   def power(card: Card): Int =
-    RankValues()
+    Rank.powers
       .find(v => v._1 == card.rank.value)
-      .getOrElse('0' -> 0)
+      .getOrElse(Char.MinValue -> Int.MinValue)
       ._2
 
   def empty: Card =
-    Card(Rank('0'), Suit('0'))
+    Card(Rank.empty, Suit.empty)
 
 }
