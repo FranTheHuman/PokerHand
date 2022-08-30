@@ -43,6 +43,12 @@ object PokerGame {
 
   }
 
+  val gameTypeString: PokerGame => String = {
+    case _: FiveCardDraw => "FiveCardDraw"
+    case _: OmahaHoldem  => "OmahaHoldem"
+    case _: TexasHoldem  => "TexasHoldem"
+  }
+
   val asString: PokerGame => String = {
     case FiveCardDraw(hands)            => hands.map(Hand.asString).mkString(" ")
     case OmahaHoldem(boardCards, hands) => ""

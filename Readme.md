@@ -139,3 +139,7 @@ Qc8dAd6c KsAsTcTs Js2dKd8c 7dQsAc5d Jh2h3c9c
 ### How to test
 
     Not Implemented
+
+### See Previous Games
+
+    You can find previous sucess games results and types in the database

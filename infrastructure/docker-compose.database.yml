@@ -1,0 +1,20 @@
+version: "3.7"
+
+services:
+
+  db:
+    image: postgres:latest
+    environment:
+      - "TZ=Europe/Amsterdam"
+      - "POSTGRES_USER=root"
+      - "POSTGRES_PASSWORD=root"
+      - "POSTGRES_DB=poker"
+    ports:
+      - 5432:5432
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: "/docker-entrypoint-initdb.d/postgres status"
+      interval: 20s
+      timeout: 15s
+      retries: 3

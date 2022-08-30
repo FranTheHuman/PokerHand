@@ -1,7 +1,7 @@
 package application.runners
 
-import application.GameSpawner
 import application.models.errors.SpawnPokerGameError
+import application.{ErrorHandler, GameSpawner, GamesRepository}
 import cats.effect.{ExitCode, IO}
 import domain.models.PokerGame.asString
 import org.typelevel.log4cats.Logger
@@ -18,11 +18,7 @@ object GameRunnerFromCommand extends GameRunner[IO, ExitCode] {
     validatedPokerGame <- GameSpawner spawn input fold (e => IO.raiseError(SpawnPokerGameError(e.toString)), IO.pure)
     _                  <- Logger[IO] info s"GAME: ${asString(validatedPokerGame)}"
     result             <- IO(validatedPokerGame.play)
+    _                  <- GamesRepository.persistGame[IO](validatedPokerGame, result)
     _                  <- Logger[IO] info s"RESULT: $result"
-  } yield ExitCode.Success) handleErrorWith {
-    case error: SpawnPokerGameError =>
-      Logger[IO].error(s"ERROR: $error : ${error.message}") >> IO(ExitCode.Error)
-    case error =>
-      Logger[IO].error(s"ERROR: $error") >> IO(ExitCode.Error)
-  }
+  } yield ExitCode.Success) handleErrorWith (ErrorHandler [IO, ExitCode] (_, ExitCode.Error))
 }

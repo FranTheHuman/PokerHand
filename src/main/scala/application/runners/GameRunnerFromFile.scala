@@ -1,8 +1,8 @@
 package application.runners
 
-import application.GameSpawner
 import application.models.Configurations.Configurations.FILE_PATH
 import application.models.errors.SpawnPokerGameError
+import application.{ErrorHandler, GameSpawner, GamesRepository}
 import cats.effect.{ExitCode, IO}
 import cats.implicits.toTraverseOps
 import domain.models.PokerGame
@@ -17,23 +17,22 @@ object GameRunnerFromFile extends GameRunner[IO, ExitCode] {
 
   override def run: IO[ExitCode] =
     FileReader read [IO] FILE_PATH use { inputs =>
-      for {
+      (for {
         _                   <- Logger[IO] info s"INPUTS: ${inputs mkString "\n"}"
         validatedPokerGames <- mapAndSpawn(inputs)
         _                   <- Logger[IO] info s"GAMES: ${validatedPokerGames mkString "\n"}"
         result              <- IO(validatedPokerGames.map(_.play))
+        _                   <- GamesRepository persistGames [IO] (validatedPokerGames, result)
         _                   <- Logger[IO] info s"RESULT: ${result mkString "\n"}"
-      } yield ExitCode.Success
+      } yield ExitCode.Success) handleErrorWith (ErrorHandler[IO, ExitCode](_, ExitCode.Error))
     }
 
-  val mapAndSpawn: List[String] => IO[List[PokerGame]] =
+  private val mapAndSpawn: List[String] => IO[List[PokerGame]] =
     inputs =>
       inputs.map { input =>
         GameSpawner
           .spawn(input)
-          .fold(
-            e => IO.raiseError(SpawnPokerGameError(e.toString.mkString("\n"))),
-            IO.pure
-          )
+          .fold(e => IO.raiseError(SpawnPokerGameError(e.toString.mkString("\n"))), IO.pure)
       }.sequence
+
 }

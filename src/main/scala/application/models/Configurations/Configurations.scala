@@ -17,4 +17,10 @@ object Configurations {
       .load[FilePath]
       .getOrElse(FilePath(""))
 
+  implicit lazy val DATABASE_CONFIG: DbConfig =
+    ConfigSource.default
+      .at("application.database")
+      .load[DbConfig]
+      .getOrElse(DbConfig())
+
 }
