@@ -15,14 +15,14 @@ object GameRunnerFromCommand extends GameRunner[IO, ExitCode] {
   override def run: IO[ExitCode] = (for {
     input              <- IO.readLine
     _                  <- Logger[IO] info s"INPUT: $input"
-    validatedPokerGame <- IO.fromEither(GameSpawner.spawn(input))
+    validatedPokerGame <- GameSpawner.spawn(input).fold(e => IO.raiseError(SpawnPokerGameError(e.toString)), IO.pure)
     _                  <- Logger[IO] info s"GAME: ${asString(validatedPokerGame)}"
     result             <- IO(validatedPokerGame.eval)
     _                  <- Logger[IO] info s"RESULT: $result"
   } yield ExitCode.Success) handleErrorWith {
     case error: SpawnPokerGameError =>
-      Logger[IO].info(s"ERROR: $error : ${error.message}") >> IO(ExitCode.Error)
+      Logger[IO].error(s"ERROR: $error : ${error.message}") >> IO(ExitCode.Error)
     case error =>
-      Logger[IO].info(s"ERROR: $error") >> IO(ExitCode.Error)
+      Logger[IO].error(s"ERROR: $error") >> IO(ExitCode.Error)
   }
 }

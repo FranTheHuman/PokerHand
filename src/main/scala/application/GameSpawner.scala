@@ -2,19 +2,21 @@ package application
 
 import application.Validators.Validation
 import application.models.errors.SpawnPokerGameError
-import cats.implicits.toTraverseOps
+import cats.implicits._
 import domain.models.Hand.makeHands
 import domain.models.PokerGame.{FiveCardDraw, OmahaHoldem, TexasHoldem}
 import domain.models.names.PokerGamesNames
 import domain.models.{Hand, PokerGame}
 
-trait GameSpawner {
+trait GameSpawner[F[_]] {
 
-  def spawn: String => Validation[PokerGame]
+  def spawn: String => F[PokerGame]
 
 }
 
-object GameSpawner extends GameSpawner with PokerGamesNames {
+object GameSpawner extends GameSpawner[Validation] with PokerGamesNames {
+
+  import application.Validators.Validation._
 
   override def spawn: String => Validation[PokerGame] =
     str =>
@@ -49,10 +51,12 @@ object GameSpawner extends GameSpawner with PokerGamesNames {
           .map(FiveCardDraw)
 
       case Some(_) =>
-        Left(SpawnPokerGameError(s"Poker Game Type Not Match with $TEXAS_HOLDEM or $OMAHA_HOLDEM or $FIVE_CARD_DRAW"))
+        left(
+          SpawnPokerGameError(s"Poker Game Type Not Match with $TEXAS_HOLDEM or $OMAHA_HOLDEM or $FIVE_CARD_DRAW")
+        )
 
       case None =>
-        Left(SpawnPokerGameError("Poker Game Type Empty"))
+        left(SpawnPokerGameError("Poker Game Type Empty"))
 
     }
 

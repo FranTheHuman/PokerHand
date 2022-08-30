@@ -24,20 +24,20 @@ object HandType {
   val evalCards: List[Card] => HandType =
     cards => {
 
-      val groups: Seq[(Rank, Int)] = Hand.group(cards)
-      val groupHas: Int => Boolean = n => groups map (_._2) contains n
-      val higher: Rank             = findHigherRankRec(groups, 5)
+      val groups: Seq[(Rank, Int)]   = Hand.group(cards)
+      val hasGroupOf: Int => Boolean = n => groups map (_._2) contains n
+      val higher: Rank               = findHigherRankRec(groups, 5)
 
       cards match {
-        case c if areSameSuit(c) && areConsecutive(c)                  => StraightFlush(higher)
-        case c if groupHas(4)                                          => FourOfAKind(higher)
-        case c if groupHas(3) && groupHas(2)                           => FullHouse(higher)
-        case c if areSameSuit(c)                                       => Flush(higher)
-        case c if areConsecutive(c)                                    => Straight(higher)
-        case c if groupHas(3)                                          => ThreeOfAKind(higher)
-        case c if groupHas(2) && groups.filterNot(_._2 == 2).size == 1 => TwoPair(higher)
-        case c if groupHas(2)                                          => Pair(higher)
-        case _                                                         => HighCard(higher)
+        case c if areSameSuit(c) && areConsecutive(c)                    => StraightFlush(higher)
+        case c if hasGroupOf(4)                                          => FourOfAKind(higher)
+        case c if hasGroupOf(3) && hasGroupOf(2)                         => FullHouse(higher)
+        case c if areSameSuit(c)                                         => Flush(higher)
+        case c if areConsecutive(c)                                      => Straight(higher)
+        case c if hasGroupOf(3)                                          => ThreeOfAKind(higher)
+        case c if hasGroupOf(2) && groups.filterNot(_._2 == 2).size == 1 => TwoPair(higher)
+        case c if hasGroupOf(2)                                          => Pair(higher)
+        case _                                                           => HighCard(higher)
       }
 
     }
@@ -51,7 +51,7 @@ object HandType {
     else if (groups.exists(_._2 == n)) groups.filter(_._2 == n).map(_._1).max
     else findHigherRankRec(groups, n - 1)
 
-  private def powers: Map[String, Int] = Map(
+  private val powers: Map[String, Int] = Map(
     "HighCard"      -> 1,
     "Pair"          -> 2,
     "TwoPair"       -> 3,

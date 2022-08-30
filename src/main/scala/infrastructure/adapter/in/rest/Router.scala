@@ -16,6 +16,8 @@ trait Router {
 
 object Router extends Router {
 
+  import application.Validators.Validation._
+
   implicit def decoder[F[_]: Concurrent]: EntityDecoder[F, List[String]] = jsonOf[F, List[String]]
   implicit def encoder[F[_]: Concurrent]: EntityEncoder[F, Json]         = jsonEncoderOf[F, Json]
 
@@ -28,7 +30,7 @@ object Router extends Router {
           (for {
             inputs              <- req.as[List[String]]
             _                   <- Logger[F] info s"INPUTS: $inputs"
-            validatedPokerGames <- Concurrent[F].fromEither(inputs.map(GameSpawner.spawn).sequence)
+            validatedPokerGames <- Concurrent[F].fromValidated(inputs.map(GameSpawner.spawn).sequence)
             _                   <- Logger[F] info s"VALID GAMES: $validatedPokerGames"
             result              <- Concurrent[F].pure(validatedPokerGames.map(_.eval))
             _                   <- Logger[F] info s"RESULTS: $result"
