@@ -33,7 +33,7 @@ object PokerGame {
               evalRec(next, Some(hand), result + s" ${Hand.asString(head)}")
 
             case None =>
-              evalRec(next, Some(head), result + s" ${Hand.asString(head)}")
+              evalRec(next, Some(head), result + s"${Hand.asString(head)}")
 
           }
         case Nil => result

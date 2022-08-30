@@ -2,6 +2,7 @@ package application.models.Configurations
 
 import com.comcast.ip4s.{Host, Port}
 import org.http4s.Uri
+import org.http4s.Uri.Path.Root
 
 case class HttpConfig(host: String, port: Int, pathName: String)
 
@@ -21,6 +22,5 @@ object HttpConfig {
       .fold(Port.fromString("8080").get)(port => port)
 
   def getPath(conf: HttpConfig): Uri.Path =
-    Option(Uri.Path.unsafeFromString(conf.pathName))
-      .fold(Uri.Path.empty)(path => path)
+    Root / conf.pathName
 }

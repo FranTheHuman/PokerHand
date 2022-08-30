@@ -21,18 +21,18 @@ object Router extends Router {
   implicit def decoder[F[_]: Concurrent]: EntityDecoder[F, List[String]] = jsonOf[F, List[String]]
   implicit def encoder[F[_]: Concurrent]: EntityEncoder[F, Json]         = jsonEncoderOf[F, Json]
 
-  override def routes[F[_]: Concurrent: Logger](pathName: Uri.Path): HttpRoutes[F] = {
+  override def routes[F[_]: Concurrent: Logger](PathName: Uri.Path): HttpRoutes[F] = {
     val dsl: Http4sDsl[F] with RequestDslBinCompat = Http4sDsl[F]
     import dsl._
     HttpRoutes
       .of[F] {
-        case req @ POST -> pathName =>
+        case req @ POST -> PathName =>
           (for {
             inputs              <- req.as[List[String]]
             _                   <- Logger[F] info s"INPUTS: $inputs"
-            validatedPokerGames <- Concurrent[F].fromValidated(inputs.map(GameSpawner.spawn).sequence)
+            validatedPokerGames <- Concurrent[F] fromValidated inputs.map(GameSpawner.spawn).sequence
             _                   <- Logger[F] info s"VALID GAMES: $validatedPokerGames"
-            result              <- Concurrent[F].pure(validatedPokerGames.map(_.eval))
+            result              <- Concurrent[F] pure validatedPokerGames.map(_.eval)
             _                   <- Logger[F] info s"RESULTS: $result"
             response            <- Ok(result.asJson)
           } yield response) handleErrorWith (error => InternalServerError(error.toString))
