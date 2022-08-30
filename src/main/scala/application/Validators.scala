@@ -17,14 +17,14 @@ object Validators {
     def left[T](e: SpawnPokerGameError): Validation[T] =
       Left(e).toValidated
 
-    implicit def applicativeInst: Applicative[Validation] = new Applicative[Validation] {
+    implicit val applicativeInst: Applicative[Validation] = new Applicative[Validation] {
       override def pure[A](x: A): Validation[A] = right(x)
 
       override def ap[A, B](ff: Validation[A => B])(fa: Validation[A]): Validation[B] =
         ff.andThen(f => fa.map(a => f(a)))
     }
 
-    implicit def monadInst: Monad[Validation] = new Monad[Validation] {
+    implicit val monadInst: Monad[Validation] = new Monad[Validation] {
       override def flatMap[A, B](fa: Validation[A])(f: A => Validation[B]): Validation[B] =
         fa.andThen(a => f(a))
 

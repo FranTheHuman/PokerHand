@@ -21,7 +21,7 @@ object GameRunnerFromFile extends GameRunner[IO, ExitCode] {
         _                   <- Logger[IO] info s"INPUTS: ${inputs mkString "\n"}"
         validatedPokerGames <- mapAndSpawn(inputs)
         _                   <- Logger[IO] info s"GAMES: ${validatedPokerGames mkString "\n"}"
-        result              <- IO(validatedPokerGames.map(_.eval))
+        result              <- IO(validatedPokerGames.map(_.play))
         _                   <- Logger[IO] info s"RESULT: ${result mkString "\n"}"
       } yield ExitCode.Success
     }

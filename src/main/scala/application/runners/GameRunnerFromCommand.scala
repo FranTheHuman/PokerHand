@@ -17,7 +17,7 @@ object GameRunnerFromCommand extends GameRunner[IO, ExitCode] {
     _                  <- Logger[IO] info s"INPUT: $input"
     validatedPokerGame <- GameSpawner spawn input fold (e => IO.raiseError(SpawnPokerGameError(e.toString)), IO.pure)
     _                  <- Logger[IO] info s"GAME: ${asString(validatedPokerGame)}"
-    result             <- IO(validatedPokerGame.eval)
+    result             <- IO(validatedPokerGame.play)
     _                  <- Logger[IO] info s"RESULT: $result"
   } yield ExitCode.Success) handleErrorWith {
     case error: SpawnPokerGameError =>

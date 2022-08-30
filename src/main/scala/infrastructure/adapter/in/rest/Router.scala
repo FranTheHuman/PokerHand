@@ -33,14 +33,12 @@ object Router extends Router {
             _                   <- Logger[F] info s"INPUTS: $inputs"
             validatedPokerGames <- Concurrent[F] fromValidated inputs.map(GameSpawner.spawn).sequence
             _                   <- Logger[F] info s"VALID GAMES: $validatedPokerGames"
-            result              <- Concurrent[F] pure validatedPokerGames.map(_.eval)
+            result              <- Concurrent[F] pure validatedPokerGames.map(_.play)
             _                   <- Logger[F] info s"RESULTS: $result"
             response            <- Ok(result.asJson)
           } yield response) handleErrorWith {
-            case error: SpawnPokerGameError =>
-              BadRequest(s"${error.message}")
-            case error =>
-              InternalServerError(error.toString)
+            case error: SpawnPokerGameError => BadRequest(s"${error.message}")
+            case error                      => InternalServerError(error.toString)
           }
         case _ => NotFound("Not the path Bro")
       }

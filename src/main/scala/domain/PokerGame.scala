@@ -5,22 +5,22 @@ import domain.models.Hand.hasSamePower
 import scala.annotation.tailrec
 
 sealed trait PokerGame {
-  def eval: String
+  def play: String
 }
 
 object PokerGame {
 
   final case class TexasHoldem(boardCards: Hand, hands: List[Hand]) extends PokerGame {
-    override def eval: String = ???
+    override def play: String = ???
   }
 
   final case class OmahaHoldem(boardCards: Hand, hands: List[Hand]) extends PokerGame {
-    override def eval: String = ???
+    override def play: String = ???
   }
 
   final case class FiveCardDraw(hands: List[Hand]) extends PokerGame {
 
-    override def eval: String = {
+    override def play: String = {
       @tailrec
       def evalRec(hs: List[Hand], last: Option[Hand], result: String): String = hs match {
         case ::(head, next) =>
