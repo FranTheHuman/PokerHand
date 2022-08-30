@@ -1,6 +1,7 @@
 package infrastructure.adapter.in.rest
 
 import application.GameSpawner
+import application.models.errors.SpawnPokerGameError
 import cats.effect.kernel.Concurrent
 import cats.syntax.all._
 import io.circe.Json
@@ -35,7 +36,12 @@ object Router extends Router {
             result              <- Concurrent[F] pure validatedPokerGames.map(_.eval)
             _                   <- Logger[F] info s"RESULTS: $result"
             response            <- Ok(result.asJson)
-          } yield response) handleErrorWith (error => InternalServerError(error.toString))
+          } yield response) handleErrorWith {
+            case error: SpawnPokerGameError =>
+              BadRequest(s"${error.message}")
+            case error =>
+              InternalServerError(error.toString)
+          }
         case _ => NotFound("Not the path Bro")
       }
   }

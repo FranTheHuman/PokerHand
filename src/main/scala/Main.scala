@@ -10,8 +10,6 @@ object Main extends IOApp with GameRunnersNames {
       case Some(FILE)         => GameRunnerFromFile.run
       case Some(GRAPHQL)      => GameRunnerFromGraphQl.run
       case _ =>
-        IO
-          .pure(System.err.println(s"Usage: sbt 'run $COMMAND_LINE | $REST | $FILE | $GRAPHQL' "))
-          .as(ExitCode(2))
+        IO pure System.err.println(s"Usage: sbt 'run $COMMAND_LINE | $REST | $FILE | $GRAPHQL' ") as ExitCode.Error
     }
 }

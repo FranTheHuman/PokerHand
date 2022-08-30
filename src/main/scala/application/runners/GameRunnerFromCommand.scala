@@ -15,7 +15,7 @@ object GameRunnerFromCommand extends GameRunner[IO, ExitCode] {
   override def run: IO[ExitCode] = (for {
     input              <- IO.readLine
     _                  <- Logger[IO] info s"INPUT: $input"
-    validatedPokerGame <- GameSpawner.spawn(input).fold(e => IO.raiseError(SpawnPokerGameError(e.toString)), IO.pure)
+    validatedPokerGame <- GameSpawner spawn input fold (e => IO.raiseError(SpawnPokerGameError(e.toString)), IO.pure)
     _                  <- Logger[IO] info s"GAME: ${asString(validatedPokerGame)}"
     result             <- IO(validatedPokerGame.eval)
     _                  <- Logger[IO] info s"RESULT: $result"
