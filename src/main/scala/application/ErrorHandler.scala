@@ -11,7 +11,7 @@ object ErrorHandler {
     case error: SpawnPokerGameError =>
       Logger[F].error(s"ERROR: $error : ${error.message}") >> Monad[F].pure(result)
     case error =>
-      Logger[F].error(s"ERROR: $error") >> Monad[F].pure(result)
+      Logger[F].error(s"ERROR: ${error.getMessage}") >> Monad[F].pure(result)
   }
 
 }

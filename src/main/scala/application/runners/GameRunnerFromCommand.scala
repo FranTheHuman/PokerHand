@@ -13,12 +13,13 @@ object GameRunnerFromCommand extends GameRunner[IO, ExitCode] {
     Slf4jLogger.getLogger[IO]
 
   override def run: IO[ExitCode] = (for {
-    input              <- IO.readLine
-    _                  <- Logger[IO] info s"INPUT: $input"
-    validatedPokerGame <- GameSpawner spawn input fold (e => IO.raiseError(SpawnPokerGameError(e.toString)), IO.pure)
+    input <- IO.readLine
+    _     <- Logger[IO] info s"INPUT: $input"
+
+    validatedPokerGame <- GameSpawner spawn input fold (e => IO raiseError e, IO.pure)
     _                  <- Logger[IO] info s"GAME: ${asString(validatedPokerGame)}"
     result             <- IO(validatedPokerGame.play)
     _                  <- GamesRepository.persistGame[IO](validatedPokerGame, result)
     _                  <- Logger[IO] info s"RESULT: $result"
-  } yield ExitCode.Success) handleErrorWith (ErrorHandler [IO, ExitCode] (_, ExitCode.Error))
+  } yield ExitCode.Success) handleErrorWith (ErrorHandler[IO, ExitCode](_, ExitCode.Error))
 }

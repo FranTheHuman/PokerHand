@@ -1,11 +1,9 @@
 package domain.models
 
+import cats.kernel.Semigroup
 import domain.HandType
 import domain.HandType._
-import domain.models.Card.{power, toCards}
-import domain.models.Rank.getIndexPower
-
-import scala.annotation.tailrec
+import domain.models.Card.toCards
 
 /** Model that represents a set of Cards for a poker player
   *
@@ -16,14 +14,32 @@ case class Hand(cards: List[Card], handType: HandType)
 
 object Hand {
 
-  implicit val handOrder: Ordering[Hand] =
-    Ordering.by(h =>
-      (
-        getPower(h.handType),               // ORDER BY TYPE HAND POWER
-        h.handType.higherRank,              // ORDER BY HIGHEST RANK
-        h.cards.map(_.rank).mkString.sorted // ORDER ALPHABETIC
+  object HandImplicits {
+
+    implicit val handOrder: Ordering[Hand] =
+      Ordering.by(h =>
+        (
+          getPower(h.handType),               // ORDER BY TYPE HAND POWER
+          h.handType.higherRank,              // ORDER BY HIGHEST RANK
+          h.cards.map(_.rank).mkString.sorted // ORDER ALPHABETIC
+        )
       )
-    )
+
+    implicit val comb: Semigroup[Hand] = new Semigroup[Hand] {
+      override def combine(x: Hand, y: Hand): Hand = {
+        def byHand: (Hand, Hand) => Hand = (x1, x2) =>
+          (x1.cards ++ x2.cards)
+            .combinations(5)
+            .toList
+            .map(Hand.apply)
+            .filter(h => !h.cards.containsSlice(x2.cards))
+            .max
+        Hand(x.cards, byHand(x, y).handType)
+      }
+
+    }
+
+  }
 
   def apply(cards: List[Card]): Hand =
     Hand(cards, evalCards(cards))

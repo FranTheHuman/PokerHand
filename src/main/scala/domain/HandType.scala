@@ -7,6 +7,18 @@ import scala.annotation.tailrec
 
 sealed trait HandType {
   val higherRank: Rank
+  def setRank(ht: HandType, r: Rank): HandType = ht match {
+    case _: HandType.StraightFlush => HandType.StraightFlush(r)
+    case _: HandType.FourOfAKind   => HandType.FourOfAKind(r)
+    case _: HandType.FullHouse     => HandType.FullHouse(r)
+    case _: HandType.Flush         => HandType.Flush(r)
+    case _: HandType.Straight      => HandType.Straight(r)
+    case _: HandType.ThreeOfAKind  => HandType.ThreeOfAKind(r)
+    case _: HandType.TwoPair       => HandType.TwoPair(r)
+    case _: HandType.Pair          => HandType.Pair(r)
+    case _: HandType.HighCard      => HandType.HighCard(r)
+  }
+
 }
 
 object HandType {
@@ -39,7 +51,6 @@ object HandType {
         case c if hasGroupOf(2)                                          => Pair(higher)
         case _                                                           => HighCard(higher)
       }
-
     }
 
   val getPower: HandType => Int =
@@ -47,7 +58,8 @@ object HandType {
 
   @tailrec
   private def findHigherRankRec(groups: Seq[(Rank, Int)], n: Int): Rank =
-    if (n <= 1) groups.map(_._1).headOption.getOrElse(Rank.empty)
+    if (n <= 1 && groups.nonEmpty) groups.map(_._1).max
+    else if (n <= 1 && groups.isEmpty) Rank.empty
     else if (groups.exists(_._2 == n)) groups.filter(_._2 == n).map(_._1).max
     else findHigherRankRec(groups, n - 1)
 
