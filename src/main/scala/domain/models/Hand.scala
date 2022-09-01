@@ -25,20 +25,6 @@ object Hand {
         )
       )
 
-    implicit val comb: Semigroup[Hand] = new Semigroup[Hand] {
-      override def combine(x: Hand, y: Hand): Hand = {
-        def byHand: (Hand, Hand) => Hand = (x1, x2) =>
-          (x1.cards ++ x2.cards)
-            .combinations(5)
-            .toList
-            .map(Hand.apply)
-            .filter(h => !h.cards.containsSlice(x2.cards))
-            .max
-        Hand(x.cards, byHand(x, y).handType)
-      }
-
-    }
-
   }
 
   def apply(cards: List[Card]): Hand =
