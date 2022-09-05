@@ -31,16 +31,16 @@ object GameSpawner extends GameSpawner[Validation] with PokerGamesNames {
 
       case Some(TEXAS_HOLDEM) =>
         for {
-          validBoardCards <- Validations.validateHandCards(cards.headOption.getOrElse(""), 10)
-          // validCards           <- Validations.validateInputConsistency(cards.tail)
-          validCardsForTheGame <- cards.tail.map(c => Validations.validateHandCards(c, 4)).sequence
+          validBoardCards      <- Validations.validateHandCards(cards.headOption.getOrElse(""), 10)
+          validCards           <- Validations.validateInputConsistency(cards.tail)
+          validCardsForTheGame <- validCards.map(c => Validations.validateHandCards(c, 4)).sequence
         } yield TexasHoldem(Hand(validBoardCards), makeHands(validCardsForTheGame))
 
       case Some(OMAHA_HOLDEM) =>
         for {
-          validBoardCards <- Validations.validateHandCards(cards.headOption.getOrElse(""), 10)
-          // validCards           <- Validations.validateInputConsistency(cards.tail)
-          validCardsForTheGame <- cards.tail.tail.map(c => Validations.validateHandCards(c, 8)).sequence
+          validBoardCards      <- Validations.validateHandCards(cards.headOption.getOrElse(""), 10)
+          validCards           <- Validations.validateInputConsistency(cards.tail)
+          validCardsForTheGame <- validCards.map(c => Validations.validateHandCards(c, 8)).sequence
         } yield OmahaHoldem(Hand(validBoardCards), makeHands(validCardsForTheGame))
 
       case Some(FIVE_CARD_DRAW) =>

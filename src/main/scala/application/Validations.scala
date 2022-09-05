@@ -6,7 +6,7 @@ import globals.Validation
 
 object Validations {
 
-  val CARD_REGEX = "([2-9KTQJA]{1}[CDSH]{1})*"
+  val CARD_REGEX = "([2-9KTQJA]{1}[cdsh]{1})*"
 
   val validateInputConsistency: List[String] => Validation[List[String]] =
     str =>
