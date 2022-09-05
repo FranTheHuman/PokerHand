@@ -1,6 +1,5 @@
 package domain.models
 
-import cats.kernel.Semigroup
 import domain.HandType
 import domain.HandType._
 import domain.models.Card.toCards
@@ -21,6 +20,7 @@ object Hand {
         (
           getPower(h.handType),               // ORDER BY TYPE HAND POWER
           h.handType.higherRank,              // ORDER BY HIGHEST RANK
+          h.handType.remainingHigherRank,     // ORDER BY HIGHEST REMAINING RANK
           h.cards.map(_.rank).mkString.sorted // ORDER ALPHABETIC
         )
       )
@@ -49,7 +49,8 @@ object Hand {
   def hasSamePower(hand1: Hand, hand2: Hand): Boolean =
     if (
       HandType.getPower(hand1.handType) == HandType.getPower(hand2.handType) &&
-      Rank.getPower(hand1.handType.higherRank.value) == Rank.getPower(hand2.handType.higherRank.value)
+      Rank.getPower(hand1.handType.higherRank.value) == Rank.getPower(hand2.handType.higherRank.value) &&
+      Rank.getPower(hand1.handType.remainingHigherRank.value) == Rank.getPower(hand2.handType.remainingHigherRank.value)
     ) true
     else false
 
